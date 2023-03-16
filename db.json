@@ -1,0 +1,16 @@
+{
+  "diarys": [
+    {
+      "id": 1,
+      "author": "Olaf",
+      "title": "오늘은 맑음",
+      "content": "오늘 날씨가 좋았다 :)"
+    },
+    {
+      "id": 2,
+      "author": "Ori",
+      "title": "마이쮸 최고오",
+      "content": "마이쮸가 너무 맛있다ㅜㅜ"
+    }
+  ]
+}
