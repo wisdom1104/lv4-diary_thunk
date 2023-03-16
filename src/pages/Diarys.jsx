@@ -1,7 +1,5 @@
-import { useMutation, useQueryClient } from "react-query";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
-import { editDiary } from "../api/diary";
 import Button from "../components/Buttons";
 import DiaryEdit from "../components/DiaryEdit";
 

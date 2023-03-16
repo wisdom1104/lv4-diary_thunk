@@ -9,20 +9,22 @@ function Create() {
 
   return (
     <CreatePage>
-      <CreateHeader>
-        <h1 style={{ color: "white" }}>오늘의 일기를 적어주세요~</h1>
-        <Button
-          text={"안 쓸래요ㅠㅠ"}
-          borderColor={"white"}
-          backgroundColor={"#586a95"}
-          onClick={() => {
-            navigate(`/`);
-          }}
-        />
-      </CreateHeader>
-      <CreateMain>
-        <CreateForm />
-      </CreateMain>
+      <CreateLayout>
+        <CreateHeader>
+          <h1 style={{ color: "white" }}>오늘의 일기를 적어주세요~</h1>
+          <Button
+            text={"안 쓸래요ㅠㅠ"}
+            borderColor={"white"}
+            backgroundColor={"#586a95"}
+            onClick={() => {
+              navigate(`/`);
+            }}
+          />
+        </CreateHeader>
+        <CreateMain>
+          <CreateForm />
+        </CreateMain>
+      </CreateLayout>
     </CreatePage>
   );
 }
@@ -30,9 +32,13 @@ function Create() {
 export default Create;
 
 const CreatePage = styled.div`
+  height: 100vh;
+  background-color: #586a95;
+`;
+
+const CreateLayout = styled.div`
   padding: 10px;
   background-color: #586a95;
-  height: 100vh;
   box-sizing: border-box;
 `;
 const CreateHeader = styled.div`

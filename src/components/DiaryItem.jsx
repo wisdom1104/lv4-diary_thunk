@@ -1,19 +1,20 @@
 import React from "react";
-import { useMutation, useQueryClient } from "react-query";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { removeDiary } from "../api/diary";
+import { __deleteDiary, __getDiarys } from "../redux/modules/diarySlice";
 import Button from "./Buttons";
 
 function DiaryItem({ item }) {
   const navigate = useNavigate();
-  const queryClient = useQueryClient();
-  //일기 삭제
-  const deleteMutation = useMutation(removeDiary, {
-    onSuccess: () => {
-      queryClient.invalidateQueries("diarys");
-    },
-  });
+  const dispatch = useDispatch();
+
+  //삭제
+  const onDeleteHandler = async (id) => {
+    await dispatch(__deleteDiary(id));
+    await dispatch(__getDiarys());
+  };
+
   return (
     <>
       <DiaryCade key={item.id}>
@@ -35,8 +36,8 @@ function DiaryItem({ item }) {
           <Button
             text={"삭제하기"}
             borderColor={"#e75388"}
-            onClick={() => {
-              deleteMutation.mutate(item.id);
+            onClick={(e) => {
+              onDeleteHandler(item.id);
             }}
           />
           <Button

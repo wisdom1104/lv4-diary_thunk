@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useMutation, useQueryClient } from "react-query";
-import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { editDiary } from "../api/diary";
 import Button from "./Buttons";
@@ -14,7 +13,7 @@ function DiaryEdit({ id, data, diary }) {
   const queryClient = useQueryClient();
   const editMutation = useMutation(editDiary, {
     onSuccess: () => {
-      queryClient.invalidateQueries("diarys");
+      queryClient.invalidateQueries("diary");
     },
   });
   return (

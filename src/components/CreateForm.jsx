@@ -1,12 +1,13 @@
 import React, { useRef, useState } from "react";
-import { useMutation, useQueryClient } from "react-query";
-import { addDiary } from "../api/diary";
 import Button from "../components/Buttons";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { __addDiary, __getDiarys } from "../redux/modules/diarySlice";
 
 function CreateForm() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [author, setAuthor] = useState("");
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -19,45 +20,34 @@ function CreateForm() {
   //   content: "",
   // });
 
-  const queryClient = useQueryClient();
-
-  //일기 추가
-  const mutation = useMutation(addDiary, {
-    onSuccess: () => {
-      queryClient.invalidateQueries("diarys");
-    },
-  });
   //유효성 검증 (글자 수 제한))
-  const submitHandler = (e) => {
-    if (author.length <= 1 || author.length > 10) {
+  const submitHandler = async (e) => {
+    if (author.length < 1 || author.length > 10) {
       alert("작성자 이름은 1글자 이상, 10글자 이하입니다!");
       authorInput.current.focus();
       return;
     }
 
-    if (title.length <= 3 || title.length > 20) {
+    if (title.length < 3 || title.length > 20) {
       alert("제목은 3글자 이상, 20글자 이하입니다!");
       titleInput.current.focus();
       return;
     }
 
-    if (content.length <= 5 || content.length > 100) {
+    if (content.length < 5 || content.length > 100) {
       alert("내용은 5글자 이상, 100글자 이하입니다!");
       contentInput.current.focus();
       return;
     }
 
-    const newDiary = {
-      author,
-      title,
-      content,
-    };
-    mutation.mutate(newDiary);
-    alert("일기 잘 썼어요~");
+    dispatch(__addDiary({ author, title, content }));
+    dispatch(__getDiarys());
+
     setAuthor("");
     setTitle("");
     setContent("");
-    navigate(`/`);
+    alert("잘했어요!");
+    await navigate(`/`);
   };
 
   return (

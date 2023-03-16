@@ -3,6 +3,8 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Home from "../pages/Home";
 import Diarys from "../pages/Diarys";
 import Create from "../pages/Create";
+import { useQuery } from "react-query";
+import { getDiarys } from "../api/diary";
 import { useDispatch, useSelector } from "react-redux";
 import { __getDiarys } from "../redux/modules/diarySlice";
 
@@ -12,9 +14,10 @@ const Router = () => {
 
   useEffect(() => {
     dispatch(__getDiarys());
-  }, [dispatch]);
+  }, []);
 
-  // console.log(todos);
+  console.log("diarys,", diarys);
+
   if (isLoading) {
     return <div> 로딩 중... </div>;
   }

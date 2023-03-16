@@ -1,49 +1,63 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
+//조회
 export const __getDiarys = createAsyncThunk(
   "getDiarys",
-  async (payload, thunkAPi) => {
+  async (payload, thunkAPI) => {
     try {
-      const response = await axios.get(
+      const data = await axios.get(
         `${process.env.REACT_APP_SERVER_URL}/diarys`
       );
-      // console.log(response.data);
-      return thunkAPi.fulfillWithValue(response.data);
+      console.log(data);
+      return thunkAPI.fulfillWithValue(data.data);
     } catch (error) {
-      console.log("error", error);
-      return thunkAPi.rejectWithValue(error);
+      return thunkAPI.rejectWithValue(error);
     }
   }
 );
 
+// 추가
+export const __addDiary = createAsyncThunk("addDiarys", async (newDiary) => {
+  await axios.post(`${process.env.REACT_APP_SERVER_URL}/diarys`, newDiary);
+});
+//삭제
+export const __deleteDiary = createAsyncThunk("deleteDiary", async (id) => {
+  await axios.delete(`${process.env.REACT_APP_SERVER_URL}/diarys/${id}`);
+});
+//수정
+export const __editDiary = createAsyncThunk("editDiary", async (payload) => {
+  await axios.patch(
+    `${process.env.REACT_APP_SERVER_URL}/diarys/${payload.id}`,
+    {
+      author: payload.author,
+      title: payload.title,
+      content: payload.content,
+    }
+  );
+});
+
 const initialState = {
   diarys: [],
   isLoading: false,
-  isError: false,
   error: null,
 };
 
-const diarySlice = createSlice({
+export const diarySlice = createSlice({
   name: "diarys",
   initialState,
   reducers: {},
   extraReducers: {
-    // #01-01 axios.GET // isLoading   ///////////////////////////////////////////////////////
-    [__getDiarys.pending]: (state, actions) => {
+    [__getDiarys.pending]: (state) => {
       state.isLoading = true;
-      state.isError = false;
     },
-    // #01-02 axios.GET // fulfilled   ///////////////////////////////////////////////////////
-    [__getDiarys.fulfilled]: (state, actions) => {
+    [__getDiarys.fulfilled]: (state, action) => {
       state.isLoading = false;
-      state.isError = false;
-      state.todos = actions.payload;
+      state.diarys = action.payload;
     },
-    // #01-03 axios.GET // isError   ///////////////////////////////////////////////////////
-    [__getDiarys.rejected]: (state, actions) => {
+    [__getDiarys.rejected]: (state, action) => {
       state.isLoading = false;
-      state.isError = true;
+      state.error = action.payload;
     },
   },
 });
