@@ -3,12 +3,12 @@ import styled from "styled-components";
 import Button from "../components/Buttons";
 import DiaryEdit from "../components/DiaryEdit";
 
-function Diarys({ data }) {
+function Diarys({ diarys }) {
   const navigate = useNavigate();
   const { id } = useParams();
 
   // console.log(id);
-  const diary = data.find((item) => {
+  const diary = diarys.find((item) => {
     return item.id === Number(id);
   });
   return (
@@ -29,7 +29,7 @@ function Diarys({ data }) {
           />
         </DiaryHeader>
         <DiaryMain>
-          <DiaryEdit data={data} diary={diary} id={id} />
+          <DiaryEdit diarys={diarys} diary={diary} id={id} />
         </DiaryMain>
       </Stlayout>
     </DiaryPage>

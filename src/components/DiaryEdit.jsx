@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { useMutation, useQueryClient } from "react-query";
+import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import { editDiary } from "../api/diary";
+import { __editDiary, __getDiarys } from "../redux/modules/diarySlice";
 import Button from "./Buttons";
 
 function DiaryEdit({ id, data, diary }) {
@@ -9,13 +11,20 @@ function DiaryEdit({ id, data, diary }) {
   const [editTitle, setEditTitle] = useState(diary.title);
   const [editContent, setEditContent] = useState(diary.content);
   const [edit, setEdit] = useState(false);
-  // console.log(id);
-  const queryClient = useQueryClient();
-  const editMutation = useMutation(editDiary, {
-    onSuccess: () => {
-      queryClient.invalidateQueries("diary");
-    },
-  });
+
+  const dispatch = useDispatch();
+  const onEidthandler = async () => {
+    const payload = {
+      id: diary.id,
+      author: editAuthor,
+      title: editTitle,
+      content: editContent,
+    };
+    await dispatch(__editDiary(payload));
+    await dispatch(__getDiarys());
+    setEdit(!edit);
+  };
+
   return (
     <DiaryBox>
       {!edit ? (
@@ -95,15 +104,7 @@ function DiaryEdit({ id, data, diary }) {
               style={{}}
               text={"수정완료"}
               borderColor={"#5385e7"}
-              onClick={() => {
-                const payload = {
-                  id: diary.id,
-                  title: editTitle,
-                  content: editContent,
-                };
-                editMutation.mutate(payload);
-                setEdit(!edit);
-              }}
+              onClick={onEidthandler}
             />
           </StBtn>
         </div>
