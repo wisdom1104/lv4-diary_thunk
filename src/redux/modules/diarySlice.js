@@ -9,7 +9,7 @@ export const __getDiarys = createAsyncThunk(
       const data = await axios.get(
         `${process.env.REACT_APP_SERVER_URL}/diarys`
       );
-      console.log(data);
+      // console.log(data);
       return thunkAPI.fulfillWithValue(data.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);

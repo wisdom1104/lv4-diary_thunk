@@ -16,7 +16,7 @@ const Router = () => {
     dispatch(__getDiarys());
   }, []);
 
-  console.log("diarys,", diarys);
+  // console.log("diarys,", diarys);
 
   if (isLoading) {
     return <div> 로딩 중... </div>;
